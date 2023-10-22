@@ -1,7 +1,7 @@
 #include <Allocator.h>
 
-#include <iostream>
-#include <atomic>
+#include <algorithm>
+#include <stdexcept>
 
 namespace memory {
 

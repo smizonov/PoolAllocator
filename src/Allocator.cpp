@@ -45,7 +45,7 @@ void* Allocator::allocate()
     if (maxBlockCount_ <= usedBlockCount_.fetch_add(1, mo::memory_order_relaxed))
         throw std::bad_alloc();
 
-    auto current = topFreeBlock_.load(mo::memory_order_acquire);
+    auto current = topFreeBlock_.load();
     while(!topFreeBlock_.compare_exchange_strong(current, current->nextFreeBlock));
 
     return static_cast<void *>(++current);
@@ -54,7 +54,7 @@ void* Allocator::allocate()
 void Allocator::deallocate(void* block)
 {
     auto current{ reinterpret_cast<Block*>(block) - 1 };
-    current->nextFreeBlock = topFreeBlock_.load(mo::memory_order_relaxed);
+    current->nextFreeBlock = topFreeBlock_.load();
     while(!topFreeBlock_.compare_exchange_strong(current->nextFreeBlock, current));
 
     if (0 >= usedBlockCount_.fetch_sub(1, mo::memory_order_relaxed))

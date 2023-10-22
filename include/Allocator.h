@@ -25,10 +25,10 @@ public:
     void deallocate(void* block);
 
 private:
-    std::atomic<Block*> head_{ nullptr };
+    std::atomic<Block*> topFreeBlock_{ nullptr };
+    char * startAllocatedMemory_{ nullptr };
     int const maxBlockCount_;
-    std::atomic<int> currentSize_{0};
-    char * start_{ nullptr };
+    std::atomic<int> usedBlockCount_{0};
 };
 
 }

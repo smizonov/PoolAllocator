@@ -37,16 +37,16 @@ void multipleThreadAllocation(
 
 TEST(AllocatorStress, SimpleAllocation)
 {
-    static constexpr auto blockCount{10};
-    static constexpr auto blockSize{10};
-    static constexpr auto threadsCount{ blockCount };
-    Allocator allocator(blockCount, blockSize);
+    static constexpr auto kBlockCount{10};
+    static constexpr auto kBlockSize{10};
+    static constexpr auto threadsCount{ kBlockCount };
+    Allocator allocator(kBlockCount, kBlockSize);
 
     std::vector<std::thread> threads;
     for (size_t i = 0; i < threadsCount; ++i)
         threads.emplace_back(std::thread(multipleThreadAllocation,
                                          std::ref(allocator),
-                                         blockSize));
+                                         kBlockSize));
 
     for (auto & thread : threads)
         thread.join();
